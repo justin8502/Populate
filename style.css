@@ -1,10 +1,12 @@
+/* Set default font, set background colors */
 body {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	margin: 0;
 	padding: 0;
-	background-color: #f9f2e8;
+	background-color: #DBDBDB;
 }
 
+/* Setting up the workspace for our elements */
 div#workspace{
 	display: flex;
 	padding-top: 20px;
@@ -31,22 +33,24 @@ div#banner-content {
 	font-weight: bold;
 }
 
+/* Create area around the circle */
 div#circBound {	
 	flex: 0 0 65%;
 	background-color: white;
 	margin: 0 auto;
 	position: relative;
 	width: 600px;
-	height: 800px;
+	height: 85vh;
 	border: 2px black dashed;
 }
 
-
+/* Handles text in the population circle */
 div#populationText {
 	font-family: "Computer Modern";
     font-style: italic;
 }
 
+/* Create the circle that represents out population */
 div#populationCirc {
     display: flex;
     align-items: center;
@@ -64,34 +68,67 @@ div#populationCirc {
    	transform: translate(0, -50%) 
 }
 
+/* Div to hold options/information */
 div#optionsBox {
   	flex: 0.9;
 	overflow: hidden; 
     vertical-align: top;
-	height: 800px;
+	height: 85vh;
 	width: 300px;
+	background-color: white;
 }
 
+/* Sliders to control population size/scale */
+div#slider{
+	margin: 5px 5px 5px 5px;
+	border: solid grey 2px;
+}
+
+/* Div to hold our information regarding the population */
+div#information {
+	margin: 5px 5px 5px 5px;
+	border: solid grey 2px;
+	font-family: "Computer Modern";
+	overflow: hidden; 
+    vertical-align: top;
+	background-color: white;
+}
+
+/* Class for button toggling animation */
 .test {
+	margin: 5px 5px 5px 5px;
 	display: inline-block;
 	vertical-align: top;
-	float: right;
 }
 
+/* Handles the result of the slider input */
 form {
   margin-top: 25px;
   text-align: center;
   
 }
 
+/* Slider class */
 input {
   width: 80%;
   display: block;
   margin: 0 auto;
 }
 
+/* Default output class for our first slider */
 output {
   display: block;
-  margin: 25px auto;
-  font-size:2em;
+  font-family: "Lucida Console", Monaco, monospace;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size:1.5em;
+}
+
+/* Second class to handle the output of the second slider */
+output#outputScale{
+  display: block;
+  font-family: "Lucida Console", Monaco, monospace;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size:1.5em;
 }
