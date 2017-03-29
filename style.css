@@ -112,7 +112,8 @@ div#popgender{
 
 /* Div to list stats on the newest generation */
 div#newgen{
-
+  margin-top: 10px;
+  text-align: center;
 }
 
 /* Class for button toggling animation */

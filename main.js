@@ -65,6 +65,7 @@ var animateCir = function() {
         }
     /* Reset the change variable */
 	tochange = 0;
+	/* If we run out of females or males, stop making children */
 	var tomate = Math.floor(Math.min(gender[0] * (outerbound-animatebound), 
 		gender[1] * (outerbound-animatebound)));
 	calcGenders(tomate);
@@ -79,7 +80,7 @@ var animateCir = function() {
     	currcycle += 1;
     	document.getElementById('gennumber').innerHTML = 'Generation ' + currcycle + ':';
     	document.getElementById('popgender').innerHTML = '&#9794;&#9792; = ' + 
-    		(gender[0]) + '/' + (gender[1]);
+    		((gender[0]*100).toFixed(2)) + '/' + ((gender[1]*100).toFixed(2));
     	document.getElementById('newgen').innerHTML = tomate*2 + ' Children Born';
 	});
 	$("#populationText").fadeIn(animationperiod);
@@ -88,24 +89,24 @@ var animateCir = function() {
 	}
 }
 
+/* Function that handles the gender of the next generation.
+ * Parameters: number representing number of children to be born
+ * Return: function that calculates the gender breakdown of the next gen.
+ */
 var calcGenders = function (iterations) {
 	var newchild;
+	/* I don't like dealing with decimals. */
 	var genderscaled = [gender[0] * (outerbound-animatebound), gender[1] * (outerbound-animatebound)];
 	while(iterations != 0){
-		if(genderscaled[0] === 0 || genderscaled[1] === 0){
-			gender[0] = (genderscaled[0]/(outerbound-animatebound));
-			gender[1] = (genderscaled[1]/(outerbound-animatebound));
-			return;
-		} else {
-			genderscaled[0]-=1;
-			genderscaled[1]-=1;
-			newchild = Math.round(Math.random());
-			genderscaled[newchild]++;
-			newchild = Math.round(Math.random());
-			genderscaled[newchild]++;
-			iterations--;
-		}
+		genderscaled[0]-=1;
+		genderscaled[1]-=1;
+		newchild = Math.round(Math.random());
+		genderscaled[newchild]++;
+		newchild = Math.round(Math.random());
+		genderscaled[newchild]++;
+		iterations--;
 	}
+	/* Convert back into decimal form */
 	gender[0] = (genderscaled[0]/(outerbound-animatebound)).toFixed(4);
 	gender[1] = (genderscaled[1]/(outerbound-animatebound)).toFixed(4);
 }
@@ -133,6 +134,8 @@ function outputUpdateScale(num) {
 /* Main function
  */
 $(document).ready(function() {
+	document.getElementById('popgender').innerHTML = '&#9794;&#9792; = ' + 
+    	((gender[0]*100).toFixed(2)) + '/' + ((gender[1]*100).toFixed(2));
 	setTimeout(function() {animateCir() }, animationcycle);
     $("button").click(function(){
         incycle = !incycle;
