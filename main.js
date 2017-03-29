@@ -13,6 +13,8 @@ var animationperiod = 500;
 var animationcycle = 5000;
 /* Var to count cycles */
 var currcycle = 1;
+/* Var to store amount of genders */
+var gender = [0.50, 0.50];
 
 /* CONSTANTS */
 /* Constant to store the amount we pulsulate */
@@ -63,17 +65,49 @@ var animateCir = function() {
         }
     /* Reset the change variable */
 	tochange = 0;
+	var tomate = Math.floor(Math.min(gender[0] * (outerbound-animatebound), 
+		gender[1] * (outerbound-animatebound)));
+	calcGenders(tomate);
 	/* Fade in/Fade out the population numbers */
 	$("#populationText").fadeOut(animationperiod, function () {
-    	document.getElementById('populationText').innerHTML = 'n=' + (outerbound - animatebound);
+		if(outerbound-animatebound >= 40) {
+    		document.getElementById('populationText').innerHTML = 'n=' + (outerbound - animatebound);
+    	} else {
+    		document.getElementById('populationText').innerHTML = '';
+    	}
+    	document.getElementById('popnumber').innerHTML = 'n = ' + (outerbound - animatebound);
     	currcycle += 1;
     	document.getElementById('gennumber').innerHTML = 'Generation ' + currcycle + ':';
+    	document.getElementById('popgender').innerHTML = '&#9794;&#9792; = ' + 
+    		(gender[0]) + '/' + (gender[1]);
+    	document.getElementById('newgen').innerHTML = tomate*2 + ' Children Born';
 	});
 	$("#populationText").fadeIn(animationperiod);
-
 	/* Callback */
 	setTimeout(function() {animateCir() }, animationcycle);
 	}
+}
+
+var calcGenders = function (iterations) {
+	var newchild;
+	var genderscaled = [gender[0] * (outerbound-animatebound), gender[1] * (outerbound-animatebound)];
+	while(iterations != 0){
+		if(genderscaled[0] === 0 || genderscaled[1] === 0){
+			gender[0] = (genderscaled[0]/(outerbound-animatebound));
+			gender[1] = (genderscaled[1]/(outerbound-animatebound));
+			return;
+		} else {
+			genderscaled[0]-=1;
+			genderscaled[1]-=1;
+			newchild = Math.round(Math.random());
+			genderscaled[newchild]++;
+			newchild = Math.round(Math.random());
+			genderscaled[newchild]++;
+			iterations--;
+		}
+	}
+	gender[0] = (genderscaled[0]/(outerbound-animatebound)).toFixed(4);
+	gender[1] = (genderscaled[1]/(outerbound-animatebound)).toFixed(4);
 }
 
 /* Handles change of input for the slider controlling population

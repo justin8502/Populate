@@ -110,6 +110,11 @@ div#popgender{
 
 }
 
+/* Div to list stats on the newest generation */
+div#newgen{
+
+}
+
 /* Class for button toggling animation */
 .test {
 	margin: 5px 5px 5px 5px;
@@ -137,7 +142,7 @@ output {
   font-family: "Lucida Console", Monaco, monospace;
   margin-top: 5px;
   margin-bottom: 5px;
-  font-size:1.5em;
+  font-size:1em;
 }
 
 /* Second class to handle the output of the second slider */
@@ -146,5 +151,5 @@ output#outputScale{
   font-family: "Lucida Console", Monaco, monospace;
   margin-top: 5px;
   margin-bottom: 5px;
-  font-size:1.5em;
+  font-size:1em;
 }
