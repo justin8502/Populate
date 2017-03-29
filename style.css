@@ -87,11 +87,27 @@ div#slider{
 /* Div to hold our information regarding the population */
 div#information {
 	margin: 5px 5px 5px 5px;
+	padding: 5px 5px 5px 5px;
 	border: solid grey 2px;
 	font-family: "Computer Modern";
 	overflow: hidden; 
     vertical-align: top;
 	background-color: white;
+}
+
+/* Div to display current generation */
+div#gennumber{
+
+}
+
+/* Div to display population size */
+div#popnumber{
+
+}
+
+/* Div to display the gender breakdown */
+div#popgender{
+
 }
 
 /* Class for button toggling animation */

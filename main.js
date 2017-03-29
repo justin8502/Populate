@@ -11,6 +11,8 @@ var tochange = 0;
 var animationperiod = 500;
 /* Var to store our animation cycle */
 var animationcycle = 5000;
+/* Var to count cycles */
+var currcycle = 1;
 
 /* CONSTANTS */
 /* Constant to store the amount we pulsulate */
@@ -64,6 +66,8 @@ var animateCir = function() {
 	/* Fade in/Fade out the population numbers */
 	$("#populationText").fadeOut(animationperiod, function () {
     	document.getElementById('populationText').innerHTML = 'n=' + (outerbound - animatebound);
+    	currcycle += 1;
+    	document.getElementById('gennumber').innerHTML = 'Generation ' + currcycle + ':';
 	});
 	$("#populationText").fadeIn(animationperiod);
 
@@ -80,7 +84,6 @@ var animateCir = function() {
 function outputUpdate(num) {
     tochange = ((outerbound-animatebound)-parseInt(num))/8;
     document.querySelector('#output').value = num;
-    //document.getElementById('populationText').innerHTML = 'n=' + num;
     outerbound = parseInt(num)+animatebound;
 }
 
