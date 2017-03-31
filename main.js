@@ -57,12 +57,13 @@ var animateCir = function() {
 	var offset = 10;
 	/* If we are cycling, then animate */
 	if(incycle) {
+		calcDeath();
 		/* If we run out of females or males, stop making children */
 		var tomate = Math.min(maleind.length, femaleind.length);
 		if(Math.min(maleind.length, femaleind.length) === femaleind.length) {
-			calcGenders2(femaleind, maleind);
+			calcGenders(femaleind, maleind);
 		} else {
-			calcGenders2(maleind, femaleind);
+			calcGenders(maleind, femaleind);
 		}
 		/* Check if we need to change the size of the circle */
 		if(prevbound != outerbound){
@@ -131,7 +132,7 @@ var assignchild = function(individual){
  * Parameters: two arrays representing male and female, in ascending order
  * Return: function that calculates the gender breakdown of the next gen.
  */
-var calcGenders2 = function (smaller, larger) {
+var calcGenders = function (smaller, larger) {
 	var newchild;
 	var bound = smaller.length;
 	var i = 0;
@@ -159,6 +160,28 @@ var calcGenders2 = function (smaller, larger) {
     outerbound = (maleind.length+femaleind.length)+animatebound;
     gender[0] = (maleind.length)/(maleind.length + femaleind.length);
     gender[1] = (femaleind.length)/(maleind.length + femaleind.length);
+}
+
+/* Function that handles the death of the next generation.
+ * Parameters: N/A
+ * Return: function that calculates the number of individuals to kill off
+ */
+var calcDeath = function() {
+	for(var i = 0; i < maleind.length; i++){
+		if(maleind[i].generation === todeath){
+			maleind.splice(i ,1);
+		} else {
+			maleind[i].generation++;
+		}
+	}
+	for(var i = 0; i < femaleind.length; i++){
+		if(femaleind[i].generation === 3){
+			femaleind.splice(i ,1);
+			i--;
+		} else {
+			femaleind[i].generation++;
+		}
+	}
 }
 
 /* Handles change of input for the slider controlling population
