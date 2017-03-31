@@ -10,15 +10,38 @@ var tochange = 0;
 /* Var to store our animation period */
 var animationperiod = 500;
 /* Var to store our animation cycle */
-var animationcycle = 5000;
+var animationcycle = 3000;
 /* Var to count cycles */
 var currcycle = 1;
 /* Var to store amount of genders */
 var gender = [0.50, 0.50];
+/* Var to store amount of males in our population*/
+var maleind = [];
+/* Var to store amount of females in population */
+var femaleind = [];
+/* Var to store the death cutoff */
+var todeath = 3;
+/* Variable for scaling */
+var scalefactor = 0;
 
 /* CONSTANTS */
 /* Constant to store the amount we pulsulate */
 const animatebound = 20;
+
+function Person (generation, gender, genotype) {
+	this.generation = generation;
+	this.gender = gender;
+	this.genotype = genotype;
+}
+
+var init = function() {
+	for(var i = 0; i < ((outerbound-animatebound)/2); i++){
+		maleind.push(new Person(0, 1, 2));
+	}
+	for(var i = 0; i < ((outerbound-animatebound)/2); i++){
+		femaleind.push(new Person(0, 0, 0));
+	}
+}
 
 /* Function that animates the circle once, then runs a callback
  * on itself. Handles cases where the population has changed 
@@ -34,6 +57,13 @@ var animateCir = function() {
 	var offset = 10;
 	/* If we are cycling, then animate */
 	if(incycle) {
+		/* If we run out of females or males, stop making children */
+		var tomate = Math.min(maleind.length, femaleind.length);
+		if(Math.min(maleind.length, femaleind.length) === femaleind.length) {
+			calcGenders2(femaleind, maleind);
+		} else {
+			calcGenders2(maleind, femaleind);
+		}
 		/* Check if we need to change the size of the circle */
 		if(prevbound != outerbound){
    	 	$("#populationCirc").animate({
@@ -65,10 +95,6 @@ var animateCir = function() {
         }
     /* Reset the change variable */
 	tochange = 0;
-	/* If we run out of females or males, stop making children */
-	var tomate = Math.floor(Math.min(gender[0] * (outerbound-animatebound), 
-		gender[1] * (outerbound-animatebound)));
-	calcGenders(tomate);
 	/* Fade in/Fade out the population numbers */
 	$("#populationText").fadeOut(animationperiod, function () {
 		if(outerbound-animatebound >= 40) {
@@ -89,26 +115,50 @@ var animateCir = function() {
 	}
 }
 
+/* Function that assigns a child to its corresponding group(s)
+ * Parameters: Person object
+ * Return: function that assigns a person object according to attributes
+ */
+var assignchild = function(individual){
+	if(individual.gender === 0) {
+		femaleind.push(individual);
+	} else{
+		maleind.push(individual);
+	}
+}
+
 /* Function that handles the gender of the next generation.
- * Parameters: number representing number of children to be born
+ * Parameters: two arrays representing male and female, in ascending order
  * Return: function that calculates the gender breakdown of the next gen.
  */
-var calcGenders = function (iterations) {
+var calcGenders2 = function (smaller, larger) {
 	var newchild;
+	var bound = smaller.length;
+	var i = 0;
 	/* I don't like dealing with decimals. */
-	var genderscaled = [gender[0] * (outerbound-animatebound), gender[1] * (outerbound-animatebound)];
-	while(iterations != 0){
-		genderscaled[0]-=1;
-		genderscaled[1]-=1;
-		newchild = Math.round(Math.random());
-		genderscaled[newchild]++;
-		newchild = Math.round(Math.random());
-		genderscaled[newchild]++;
-		iterations--;
+	for(var i = 0; i < bound; i++){
+		var parent1 = smaller[Math.floor(Math.random() * smaller.length).toFixed(0)].genotype;
+		var parent2 = larger[Math.floor(Math.random() * larger.length).toFixed(0)].genotype;
+		var childgenotype;
+		if(parent1 === 1 && parent2 === 1){
+			var tempgenotype = Math.floor(4*Math.random()).toFixed(0);
+			if(tempgenotype > 1 && tempgenotype < 2){
+				childgenotype = 1;
+			} else if (tempgenotype < 1){
+				childgenotype = 0;
+			} else {
+				childgenotype = 2;
+			}
+		} else {
+			childgenotype = Math.round((Math.random() * parent1 + Math.random() * parent2) / 2).toFixed(0);
+		} 
+		newchild = new Person(0, Math.round(Math.random()), childgenotype);
+		assignchild(newchild);
 	}
-	/* Convert back into decimal form */
-	gender[0] = (genderscaled[0]/(outerbound-animatebound)).toFixed(4);
-	gender[1] = (genderscaled[1]/(outerbound-animatebound)).toFixed(4);
+	tochange = (-(maleind.length+animatebound))/4;
+    outerbound = (maleind.length+femaleind.length)+animatebound;
+    gender[0] = (maleind.length)/(maleind.length + femaleind.length);
+    gender[1] = (femaleind.length)/(maleind.length + femaleind.length);
 }
 
 /* Handles change of input for the slider controlling population
@@ -136,6 +186,7 @@ function outputUpdateScale(num) {
 $(document).ready(function() {
 	document.getElementById('popgender').innerHTML = '&#9794;&#9792; = ' + 
     	((gender[0]*100).toFixed(2)) + '/' + ((gender[1]*100).toFixed(2));
+    init();
 	setTimeout(function() {animateCir() }, animationcycle);
     $("button").click(function(){
         incycle = !incycle;
