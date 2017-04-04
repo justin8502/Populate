@@ -24,11 +24,13 @@ var genotypes = [0, 0, 0];
 /* Var to store the death cutoff */
 var todeath = 3;
 /* Variable for scaling */
-var scalefactor = 0;
+var scalefactor = 1;
 
 /* CONSTANTS */
 /* Constant to store the amount we pulsulate */
 const animatebound = 20;
+/* Constant to store the limit before we resize */
+const scalelimit = 400;
 
 function Person (generation, gender, genotype) {
 	this.generation = generation;
@@ -67,6 +69,10 @@ var animateCir = function() {
 	/* If we are cycling, then animate */
 	if(incycle) {
 		calcDeath();
+		if((outerbound/scalefactor) > scalelimit){
+			scalefactor = scalefactor * 10;
+			$('#populationCirc').css("left", "45%")
+		}
 		/* If we run out of females or males, stop making children */
 		var tomate = Math.min(maleind.length, femaleind.length);
 		if(Math.min(maleind.length, femaleind.length) === femaleind.length) {
@@ -75,31 +81,31 @@ var animateCir = function() {
 			calcGenders(maleind, femaleind);
 		}
 		/* Check if we need to change the size of the circle */
-		if(prevbound != outerbound){
+		if(prevbound != (outerbound/scalefactor)){
    	 	$("#populationCirc").animate({
         	width: prevbound,
         	height: prevbound,
         	left: '-=' + parseInt(offset),
 			}, animationperiod); 
-   	 	prevbound = outerbound;
+   	 		prevbound = outerbound/scalefactor;
 		} else {
    	 	$("#populationCirc").animate({
-        	width: outerbound,
-        	height: outerbound,
+        	width: (outerbound/scalefactor),
+        	height: (outerbound/scalefactor),
         	left: '-=' + parseInt(offset),
 			}, animationperiod); 
    	 	}
 		/* Check if we need to change the size of the circle */
         if(parseInt(tochange) != 0) {
     		$("#populationCirc").animate({
-        		width: outerbound - animatebound,
-        		height: outerbound - animatebound,
+        		width: (outerbound - animatebound)/scalefactor,
+        		height: (outerbound - animatebound)/scalefactor,
         		left: '+=' + (parseInt(offset) + parseInt(tochange)),
 				}, animationperiod);
         } else {
     		$("#populationCirc").animate({
-        		width: outerbound - animatebound,
-        		height: outerbound - animatebound,
+        		width: (outerbound - animatebound)/scalefactor,
+        		height: (outerbound - animatebound)/scalefactor,
         		left: '+=' + parseInt(offset),
 				}, animationperiod);
         }
@@ -169,7 +175,7 @@ var calcGenders = function (smaller, larger) {
 		newchild = new Person(0, Math.round(Math.random()), childgenotype);
 		assignchild(newchild);
 	}
-	tochange = (-(maleind.length+animatebound))/4;
+	tochange = (-(maleind.length+animatebound))/(4*scalefactor);
     outerbound = (maleind.length+femaleind.length)+animatebound;
     gender[0] = (maleind.length)/(maleind.length + femaleind.length);
     gender[1] = (femaleind.length)/(maleind.length + femaleind.length);
