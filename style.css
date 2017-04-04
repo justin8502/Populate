@@ -110,6 +110,16 @@ div#popgender{
 
 }
 
+/* Div to display the frequency of p */
+div#pfreq{
+
+}
+
+/* Div to display the frequency of q */
+div#qfreq{
+
+}
+
 /* Div to list stats on the newest generation */
 div#newgen{
   margin-top: 10px;

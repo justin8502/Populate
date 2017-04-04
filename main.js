@@ -19,6 +19,8 @@ var gender = [0.50, 0.50];
 var maleind = [];
 /* Var to store amount of females in population */
 var femaleind = [];
+/* Var to store genotypes in population */
+var genotypes = [0, 0, 0];
 /* Var to store the death cutoff */
 var todeath = 3;
 /* Variable for scaling */
@@ -36,10 +38,17 @@ function Person (generation, gender, genotype) {
 
 var init = function() {
 	for(var i = 0; i < ((outerbound-animatebound)/2); i++){
-		maleind.push(new Person(0, 1, 2));
+		if(i%2 === 0){
+			maleind.push(new Person(0, 1, 1));
+			genotypes[1]++;			
+		} else {
+			maleind.push(new Person(0, 1, 2));
+			genotypes[2]++;
+		}
 	}
 	for(var i = 0; i < ((outerbound-animatebound)/2); i++){
 		femaleind.push(new Person(0, 0, 0));
+		genotypes[0]++;
 	}
 }
 
@@ -108,6 +117,9 @@ var animateCir = function() {
     	document.getElementById('gennumber').innerHTML = 'Generation ' + currcycle + ':';
     	document.getElementById('popgender').innerHTML = '&#9794;&#9792; = ' + 
     		((gender[0]*100).toFixed(2)) + '/' + ((gender[1]*100).toFixed(2));
+    	var q = (Math.sqrt(genotypes[2]/(genotypes[0]+genotypes[1]+genotypes[2]))).toFixed(2);
+    	document.getElementById('pfreq').innerHTML = 'p = ' + (1-q).toFixed(2);
+    	document.getElementById('qfreq').innerHTML = 'q = ' + q;
     	document.getElementById('newgen').innerHTML = tomate*2 + ' Children Born';
 	});
 	$("#populationText").fadeIn(animationperiod);
@@ -126,6 +138,7 @@ var assignchild = function(individual){
 	} else{
 		maleind.push(individual);
 	}
+	genotypes[individual.genotype]++;
 }
 
 /* Function that handles the gender of the next generation.
@@ -138,11 +151,11 @@ var calcGenders = function (smaller, larger) {
 	var i = 0;
 	/* I don't like dealing with decimals. */
 	for(var i = 0; i < bound; i++){
-		var parent1 = smaller[Math.floor(Math.random() * smaller.length).toFixed(0)].genotype;
-		var parent2 = larger[Math.floor(Math.random() * larger.length).toFixed(0)].genotype;
+		var parent1 = smaller[Math.floor(Math.random() * smaller.length)].genotype;
+		var parent2 = larger[Math.floor(Math.random() * larger.length)].genotype;
 		var childgenotype;
-		if(parent1 === 1 && parent2 === 1){
-			var tempgenotype = Math.floor(4*Math.random()).toFixed(0);
+		if(parent1 === 1 || parent2 === 1){
+			var tempgenotype = Math.floor(4*Math.random());
 			if(tempgenotype > 1 && tempgenotype < 2){
 				childgenotype = 1;
 			} else if (tempgenotype < 1){
@@ -151,7 +164,7 @@ var calcGenders = function (smaller, larger) {
 				childgenotype = 2;
 			}
 		} else {
-			childgenotype = Math.round((Math.random() * parent1 + Math.random() * parent2) / 2).toFixed(0);
+			childgenotype = Math.round((parent1 + parent2) / 2);
 		} 
 		newchild = new Person(0, Math.round(Math.random()), childgenotype);
 		assignchild(newchild);
@@ -169,13 +182,16 @@ var calcGenders = function (smaller, larger) {
 var calcDeath = function() {
 	for(var i = 0; i < maleind.length; i++){
 		if(maleind[i].generation === todeath){
+			genotypes[maleind[i].genotype]--;
 			maleind.splice(i ,1);
+			i--;
 		} else {
 			maleind[i].generation++;
 		}
 	}
 	for(var i = 0; i < femaleind.length; i++){
 		if(femaleind[i].generation === 3){
+			genotypes[femaleind[i].genotype]--;
 			femaleind.splice(i ,1);
 			i--;
 		} else {
