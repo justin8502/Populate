@@ -129,6 +129,11 @@ div#intervaldisplay{
 	padding-right: 5px;
 }
 
+/* Div to display generations to death */
+div#intervaldeath{
+
+}
+
 /* + Button */
 button#add{
 	padding-left: 5px;
@@ -140,6 +145,36 @@ button#add{
 
 /* Display new population values */
 div#newpop {
+	font-weight: bold;
+}
+
+/* Button for new generation */
+button#createnew{
+	margin-left:auto;
+	margin-right: auto;
+	margin-top: 10px;
+	display:block;
+}
+
+/* Display new n */
+div#newn{
+
+}
+
+/* Display new q */
+div#newp{
+
+}
+
+/* Display new p */
+div#newq{
+
+}
+
+
+
+/* Display new population values */
+div#modifiers {
 	font-weight: bold;
 }
 

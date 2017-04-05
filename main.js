@@ -135,7 +135,7 @@ var animateCir = function() {
     	document.getElementById('gennumber').innerHTML = 'Generation ' + currcycle + ':';
     	document.getElementById('popgender').innerHTML = '&#9794;&#9792; = ' + 
     		((gender[0]*100).toFixed(2)) + '/' + ((gender[1]*100).toFixed(2));
-    	var q = (Math.sqrt(genotypes[2]/(genotypes[0]+genotypes[1]+genotypes[2]))).toFixed(2);
+    	var q = (Math.sqrt(genotypes[0]/(genotypes[0]+genotypes[1]+genotypes[2]))).toFixed(2);
     	document.getElementById('pfreq').innerHTML = 'p = ' + (1-q).toFixed(2);
     	document.getElementById('qfreq').innerHTML = 'q = ' + q;
     	document.getElementById('newgen').innerHTML = tomate*2 + ' Children Born';
@@ -246,6 +246,29 @@ function outputUpdateScale(num) {
     document.querySelector('#outputScale').value = parseInt(num);
 }
 
+/* Handles the validation of inputs in text boxes.
+ * Parameters: N/A
+ * Return: True if valids are legitimate, false otherwise
+ */
+function validNewGeneration() {
+   	if(isNaN(document.getElementById('newn').value) || !document.getElementById('newn').value){
+       	alert("Invalid inputs.");
+       	return false;
+    } else if (isNaN(document.getElementById('newp').value) || isNaN(document.getElementById('newq').value)) {
+       	alert("Invalid inputs.");
+       	return false;
+    } else if ((+(document.getElementById('newp').value) + +(document.getElementById('newq').value)) != 1){
+       	alert("Allele frequencies don't match up!");
+       	return false;
+    }
+    return true;
+}
+
+function calcNewGen(n, p, q) {
+	maleind.splice(0, maleind.length);
+	femaleind.splice(0, femaleind.length);
+}
+
 /* Main function
  */
 $(document).ready(function() {
@@ -261,6 +284,14 @@ $(document).ready(function() {
 			animationcycle = animationcycle - 1000;
 		}
 	});
+	$('.createnew').click(function(){
+        if(!validNewGeneration()){
+        
+        } else {
+        	incycle = !incycle;
+       		setTimeout(function() {animateCir() }, animationcycle);
+       }
+    });
 	document.getElementById('popgender').innerHTML = '&#9794;&#9792; = ' + 
     	((gender[0]*100).toFixed(2)) + '/' + ((gender[1]*100).toFixed(2));
     init();
