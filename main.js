@@ -25,14 +25,14 @@ var genotypes = [0, 0, 0];
 var todeath = 3;
 /* Variable for scaling */
 var scalefactor = 1;
+/* Variable to shift left */
+var absleft = 650;
 
 /* CONSTANTS */
 /* Constant to store the amount we pulsulate */
 const animatebound = 20;
 /* Constant to store the limit before we resize */
 const scalelimit = 400;
-
-const absleft = 650;
 
 function Person (generation, gender, genotype) {
 	this.generation = generation;
@@ -41,15 +41,18 @@ function Person (generation, gender, genotype) {
 }
 
 var init = function() {
+	/* Initialize males. Initial are mostly heterozygotes with
+	 * some homozygous dominant mixed in. */
 	for(var i = 0; i < ((outerbound-animatebound)/2); i++){
-		if(i%2 === 0){
-			maleind.push(new Person(0, 1, 1));
-			genotypes[1]++;			
-		} else {
+		if(i%3 === 0){
 			maleind.push(new Person(0, 1, 2));
-			genotypes[2]++;
+			genotypes[2]++;			
+		} else {
+			maleind.push(new Person(0, 1, 1));
+			genotypes[1]++;
 		}
 	}
+	/* Initialize females. All females are homozygous recessive */
 	for(var i = 0; i < ((outerbound-animatebound)/2); i++){
 		femaleind.push(new Person(0, 0, 0));
 		genotypes[0]++;
@@ -70,6 +73,9 @@ var animateCir = function() {
 	var offset = 10;
 	/* If we are cycling, then animate */
 	if(incycle) {
+		var endstring = $('#intervaldisplay').text().length-1;
+		animationcycle = parseInt($('#intervaldisplay').text().substring(0 , endstring)) * 1000;
+		//animationperiod = $('#');
 		calcDeath();
 		if((outerbound/scalefactor) > scalelimit){
 			scalefactor = scalefactor * 5;
@@ -102,7 +108,6 @@ var animateCir = function() {
     		$("#populationCirc").animate({
         		width: (outerbound/scalefactor) - animatebound,
         		height: (outerbound/scalefactor) - animatebound,
-        		//left: '+=' + (parseInt(offset) + parseInt(tochange)),
         		left: ((absleft - parseInt(x))/2),
 				}, animationperiod);
         } else {
@@ -116,6 +121,10 @@ var animateCir = function() {
 	tochange = 0;
 	/* Fade in/Fade out the population numbers */
 	$("#populationText").fadeOut(animationperiod, function () {
+		/* Technical Information */
+    	document.getElementById('currscaling').innerHTML = 'Current Scaling: 1:' + scalefactor;
+
+		/* Generation Information */
 		if(outerbound-animatebound >= 40) {
     		document.getElementById('populationText').innerHTML = 'n=' + (outerbound - animatebound);
     	} else {
@@ -147,6 +156,7 @@ var assignchild = function(individual){
 	} else{
 		maleind.push(individual);
 	}
+	/* Update the genotypes array */
 	genotypes[individual.genotype]++;
 }
 
@@ -163,7 +173,7 @@ var calcGenders = function (smaller, larger) {
 		var parent1 = smaller[Math.floor(Math.random() * smaller.length)].genotype;
 		var parent2 = larger[Math.floor(Math.random() * larger.length)].genotype;
 		var childgenotype;
-		if(parent1 === 1 || parent2 === 1){
+		if(parent1 === 1 && parent2 === 1){
 			var tempgenotype = Math.floor(4*Math.random());
 			if(tempgenotype > 1 && tempgenotype < 2){
 				childgenotype = 1;
@@ -173,6 +183,13 @@ var calcGenders = function (smaller, larger) {
 				childgenotype = 2;
 			}
 		} else {
+			/* Heterozygotes have a 50/50 chance of passing on
+			 * dominant/recessive alleles */
+			if(parent1 === 1) {
+				parent1 = Math.round(Math.random());
+			} else if (parent2 === 1){
+				parent2 = Math.round(Math.random());
+			}
 			childgenotype = Math.round((parent1 + parent2) / 2);
 		} 
 		newchild = new Person(0, Math.round(Math.random()), childgenotype);
@@ -232,12 +249,25 @@ function outputUpdateScale(num) {
 /* Main function
  */
 $(document).ready(function() {
+	$('.add').click(function () {
+    	document.getElementById('intervaldisplay').innerHTML = ((animationcycle/1000) + 1) + 's';
+		animationcycle = animationcycle + 1000;
+	});
+	$('.sub').click(function () {
+		if(animationcycle === 1000){
+			alert("You can't do that!");
+		} else {
+    		document.getElementById('intervaldisplay').innerHTML = ((animationcycle/1000) - 1) + 's';
+			animationcycle = animationcycle - 1000;
+		}
+	});
 	document.getElementById('popgender').innerHTML = '&#9794;&#9792; = ' + 
     	((gender[0]*100).toFixed(2)) + '/' + ((gender[1]*100).toFixed(2));
     init();
 	setTimeout(function() {animateCir() }, animationcycle);
-    $("button").click(function(){
+    $('.togglerun').click(function(){
+    	$(this).html(incycle ? 'Resume':'Pause');
         incycle = !incycle;
+       	setTimeout(function() {animateCir() }, animationcycle);
     });
-
 });

@@ -41,23 +41,24 @@
 			<div id="populationCirc"> <div id="populationText">n=100</div>
 			</div>
 		</div>
+
     <div id="optionsBox">
-      <div id="slider">
-      <form>
-      <span style="font-family: Computer Modern">Population Size</span>
-      <input type="range" id="valuesize" value="100" step="10" min="10" max="200" oninput="outputUpdate(value)">
-      <output for=valuesize id="output">100</output>
-      </form>
+      <div id="information"> 
+        <div id="technical"> Technical: 
+        </div>
+        <div id="currscaling"> Current Scaling: 1:1
+        </div>
+        <div id="timegen"> Time/Generation:
+          <button type="button" id="add" class="add">+</button>
+          <div id="intervaldisplay">3s</div>
+          <button type="button" id="sub" class="sub">-</button>
+        </div>
       </div>
-      <div id="slider">
-      <form>
-      <span style="font-family: Computer Modern">Population Scale</span>
-      <input type="range" id="valuescale" value="100" step="100" min="10" max="2000" oninput="outputUpdateScale(value)">
-      <output for=valuescale id="outputScale">100</output>
-      </form>
-      </div>
-      <div>
-        <button class = "test">Toggle Animation</button>
+      <div id="information"> 
+        <div id="newpop"> New Population: 
+        </div>
+        n: <input type="text" name="newn" id="txt" placeholder = "100"/>
+        p: <input type="text" name="txt" id="txt"/>
       </div>
       <div id="information"> 
         <div id="gennumber"> Generation 1: 
@@ -66,12 +67,15 @@
         </div>
         <div id="popgender"> &#9794;&#9792; = 0.50/0.50
         </div>
-        <div id="pfreq"> p = 0.50
+        <div id="pfreq"> p = 0.29
         </div>
-        <div id="qfreq"> q = 0.50
+        <div id="qfreq"> q = 0.71
         </div>
         <div id="newgen"> N/A
         </div>
+      </div>
+      <div>
+        <button type="button" id="togglerun" class = "togglerun">Pause</button>
       </div>
     </div>
       	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

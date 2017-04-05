@@ -84,6 +84,8 @@ div#slider{
 	border: solid grey 2px;
 }
 
+
+
 /* Div to hold our information regarding the population */
 div#information {
 	margin: 5px 5px 5px 5px;
@@ -95,9 +97,57 @@ div#information {
 	background-color: white;
 }
 
+
+
+/* Header for technical box */
+div#technical{
+	font-weight: bold;
+}
+
+/* Display scaling factors */
+div#currscaling{
+
+}
+
+/* Display Animation Delay */
+div#timegen{
+	display: inline-block;
+}
+
+/* - Button */
+button#sub{
+	margin-left: 10px;
+	padding-left: 5px;
+	float: right;
+	padding-right: 5px;
+}
+
+/* Div to display time interval between generations */
+div#intervaldisplay{
+	padding-left: 5px;
+	float: right;
+	padding-right: 5px;
+}
+
+/* + Button */
+button#add{
+	padding-left: 5px;
+	float: right;
+	padding-right: 5px;
+}
+
+
+
+/* Display new population values */
+div#newpop {
+	font-weight: bold;
+}
+
+
+
 /* Div to display current generation */
 div#gennumber{
-
+	font-weight: bold;
 }
 
 /* Div to display population size */
@@ -127,7 +177,7 @@ div#newgen{
 }
 
 /* Class for button toggling animation */
-.test {
+button#togglerun {
 	margin: 5px 5px 5px 5px;
 	display: inline-block;
 	vertical-align: top;
@@ -136,31 +186,12 @@ div#newgen{
 /* Handles the result of the slider input */
 form {
   margin-top: 25px;
-  text-align: center;
-  
+  text-align: center; 
 }
 
 /* Slider class */
 input {
-  width: 80%;
-  display: block;
-  margin: 0 auto;
-}
-
-/* Default output class for our first slider */
-output {
-  display: block;
-  font-family: "Lucida Console", Monaco, monospace;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  font-size:1em;
-}
-
-/* Second class to handle the output of the second slider */
-output#outputScale{
-  display: block;
-  font-family: "Lucida Console", Monaco, monospace;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  font-size:1em;
+	text-align: right;
+  	width: 60px;
+  	margin: 0 auto;
 }
