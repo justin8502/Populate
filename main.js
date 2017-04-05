@@ -32,6 +32,8 @@ const animatebound = 20;
 /* Constant to store the limit before we resize */
 const scalelimit = 400;
 
+const absleft = 650;
+
 function Person (generation, gender, genotype) {
 	this.generation = generation;
 	this.gender = gender;
@@ -70,8 +72,7 @@ var animateCir = function() {
 	if(incycle) {
 		calcDeath();
 		if((outerbound/scalefactor) > scalelimit){
-			scalefactor = scalefactor * 10;
-			$('#populationCirc').css("left", "45%")
+			scalefactor = scalefactor * 5;
 		}
 		/* If we run out of females or males, stop making children */
 		var tomate = Math.min(maleind.length, femaleind.length);
@@ -95,17 +96,19 @@ var animateCir = function() {
         	left: '-=' + parseInt(offset),
 			}, animationperiod); 
    	 	}
+   	 	var x = (outerbound/scalefactor) - animatebound;
 		/* Check if we need to change the size of the circle */
         if(parseInt(tochange) != 0) {
     		$("#populationCirc").animate({
-        		width: (outerbound - animatebound)/scalefactor,
-        		height: (outerbound - animatebound)/scalefactor,
-        		left: '+=' + (parseInt(offset) + parseInt(tochange)),
+        		width: (outerbound/scalefactor) - animatebound,
+        		height: (outerbound/scalefactor) - animatebound,
+        		//left: '+=' + (parseInt(offset) + parseInt(tochange)),
+        		left: ((absleft - parseInt(x))/2),
 				}, animationperiod);
         } else {
     		$("#populationCirc").animate({
-        		width: (outerbound - animatebound)/scalefactor,
-        		height: (outerbound - animatebound)/scalefactor,
+        		width: (outerbound/scalefactor) - animatebound,
+        		height: (outerbound/scalefactor) - animatebound,
         		left: '+=' + parseInt(offset),
 				}, animationperiod);
         }
