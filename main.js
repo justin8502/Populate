@@ -125,7 +125,7 @@ var animateCir = function() {
     	document.getElementById('currscaling').innerHTML = 'Current Scaling: 1:' + scalefactor;
 
 		/* Generation Information */
-		if(outerbound-animatebound >= 40) {
+		if((outerbound-animatebound/scalefactor) >= 40) {
     		document.getElementById('populationText').innerHTML = 'n=' + (outerbound - animatebound);
     	} else {
     		document.getElementById('populationText').innerHTML = '';
