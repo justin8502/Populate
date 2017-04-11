@@ -39,7 +39,10 @@ div#circBound {
 	background-color: white;
 	margin: 0 auto;
 	position: relative;
-	width: 600px;
+	width: 640px;
+	max-width: 640px;
+	min-width: 640px;
+	overflow-x: 
 	height: 85vh;
 	border: 2px black dashed;
 }
@@ -74,8 +77,11 @@ div#optionsBox {
 	overflow: hidden; 
     vertical-align: top;
 	height: 85vh;
-	width: 300px;
+	width: 280px;
+	min-width: 280px;
+	max-width: 280px;
 	background-color: white;
+	margin-left: 20px;
 }
 
 /* Sliders to control population size/scale */
@@ -209,6 +215,14 @@ div#qfreq{
 div#newgen{
   margin-top: 10px;
   text-align: center;
+  color: blue;
+}
+
+/* Div to list stats on the current population */
+div#deathgen{
+  margin-top: 10px;
+  text-align: center;
+  color: red;
 }
 
 /* Class for button toggling animation */
@@ -237,7 +251,8 @@ footer {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	padding: 10px 20% 10px 20%;
+	padding: 5px 20% 5px 20%;
 	background-color: #808080;
 	text-align: center;
+	display: none;
 }

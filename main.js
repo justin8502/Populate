@@ -27,6 +27,8 @@ var todeath = 3;
 var scalefactor = 1;
 /* Variable to shift left */
 var absleft = 650;
+/* Variable to store dead individuals */
+var killedoff = 0;
 
 /* CONSTANTS */
 /* Constant to store the amount we pulsulate */
@@ -139,6 +141,8 @@ var animateCir = function() {
     	document.getElementById('pfreq').innerHTML = 'p = ' + (1-q).toFixed(2);
     	document.getElementById('qfreq').innerHTML = 'q = ' + q;
     	document.getElementById('newgen').innerHTML = tomate*2 + ' Children Born';
+    	document.getElementById('deathgen').innerHTML = killedoff + ' Individuals Died';
+    	killedoff = 0;
 	});
 	$("#populationText").fadeIn(animationperiod);
 	/* Callback */
@@ -211,6 +215,7 @@ var calcDeath = function() {
 			genotypes[maleind[i].genotype]--;
 			maleind.splice(i ,1);
 			i--;
+			killedoff++;
 		} else {
 			maleind[i].generation++;
 		}
@@ -220,6 +225,7 @@ var calcDeath = function() {
 			genotypes[femaleind[i].genotype]--;
 			femaleind.splice(i ,1);
 			i--;
+			killedoff++;
 		} else {
 			femaleind[i].generation++;
 		}
