@@ -12,6 +12,10 @@ div#workspace{
 	padding-top: 20px;
 	padding-left: 5%;
 	padding-right: 5%;
+	height: 85vh;
+	width: 800px;
+	max-width: 800px;
+	min-width: 800px;
 }
 
 /* Create our div for the top of the page */
@@ -69,6 +73,15 @@ div#populationCirc {
    	top: 50%;
 	left: 275px;
    	transform: translate(0, -50%) 
+}
+
+/* Div to alert if a change is going to occur */
+div#willchange{
+	position: fixed;
+	font-family: "Computer Modern";
+	margin-top: 80vh;
+	margin-left: 50vw;
+	font-size: 1em;
 }
 
 /* Div to hold options/information */

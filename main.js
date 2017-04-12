@@ -22,7 +22,7 @@ var femaleind = [];
 /* Var to store genotypes in population */
 var genotypes = [0, 0, 0];
 /* Var to store the death cutoff */
-var todeath = 3;
+var todeath = 2;
 /* Variable for scaling */
 var scalefactor = 1;
 /* Variable to shift left */
@@ -36,13 +36,19 @@ const animatebound = 20;
 /* Constant to store the limit before we resize */
 const scalelimit = 400;
 
+/* Constructor for a Person object.
+ * Parameters: generation, gender and genotype of person
+ * Return: N/A
+ */
 function Person (generation, gender, genotype) {
 	this.generation = generation;
 	this.gender = gender;
 	this.genotype = genotype;
 }
 
+/* Initializer function */
 var init = function() {
+	document.getElementById('intervaldeath').innerHTML = "Death by: gen " + todeath;
 	/* Initialize males. Initial are mostly heterozygotes with
 	 * some homozygous dominant mixed in. */
 	for(var i = 0; i < ((outerbound-animatebound)/2); i++){
@@ -59,6 +65,15 @@ var init = function() {
 		femaleind.push(new Person(0, 0, 0));
 		genotypes[0]++;
 	}
+}
+
+/* Function that updates the text in the bottom-right corner upon
+ * a change in the modifiers.
+ * Parameters: N/A
+ * Return: Function that updates text according to modifiers
+ */
+var modChange = function() {
+	document.getElementById('willchange').innerHTML = "CHANGE DETECTED. INSERTING ON GEN " + currcycle;
 }
 
 /* Function that animates the circle once, then runs a callback
@@ -270,6 +285,10 @@ function validNewGeneration() {
     return true;
 }
 
+/* Calculates the new generation given individuals and the p/q frequencies
+ * Parameters: the number of individuals, p and q frequencies
+ * Return: N/A 
+ */
 function calcNewGen(n, p, q) {
 	maleind.splice(0, maleind.length);
 	femaleind.splice(0, femaleind.length);
